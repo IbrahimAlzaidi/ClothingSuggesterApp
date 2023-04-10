@@ -1,7 +1,6 @@
 package com.example.clothingsuggesterapp
 
 
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView

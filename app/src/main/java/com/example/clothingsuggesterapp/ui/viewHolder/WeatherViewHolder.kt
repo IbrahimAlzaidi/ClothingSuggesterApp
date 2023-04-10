@@ -39,7 +39,7 @@ class WeatherViewHolder(
     }
 
     private fun updateTextColor(isSelected: Boolean) {
-        val textColor = if (isSelected) R.color.black else R.color.white
+        val textColor = if (isSelected) R.color.newcol3 else R.color.white
         val resolvedColor = ContextCompat.getColor(itemView.context, textColor)
         binding.dayName.setTextColor(resolvedColor)
         binding.weatherDegree.setTextColor(resolvedColor)
