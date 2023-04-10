@@ -3,64 +3,75 @@ package com.example.clothingsuggesterapp
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.clothingsuggesterapp.data.WeatherCallback
 import com.example.clothingsuggesterapp.data.remote.Network
 import com.example.clothingsuggesterapp.databinding.ActivityMainBinding
+import com.example.clothingsuggesterapp.model.WeatherInfo
 import com.example.clothingsuggesterapp.model.WeatherResponse
+import com.example.clothingsuggesterapp.ui.OnWeatherItemClickListener
 import com.example.clothingsuggesterapp.ui.adapters.WeatherAdapter
 import com.example.clothingsuggesterapp.ui.base.BaseActivity
-import com.example.clothingsuggesterapp.ui.viewHolders.getDayNameFromTimestamp
 import com.example.clothingsuggesterapp.utils.PrefsUtil
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.clothingsuggesterapp.utils.Utils.getDayNameFromTimestamp
+import com.example.clothingsuggesterapp.utils.Utils.getRandomImageForTemperature
+import kotlin.math.ceil
 
-class MainActivity : BaseActivity<ActivityMainBinding>(), WeatherCallback {
+class MainActivity : BaseActivity<ActivityMainBinding>(), WeatherCallback,
+    OnWeatherItemClickListener {
     override val LOG_TAG: String? = MainActivity::class.simpleName
-    override val bindingInflater: (LayoutInflater) -> ActivityMainBinding =
-        ActivityMainBinding::inflate
+    override val bindingInflater: (LayoutInflater) -> ActivityMainBinding = ActivityMainBinding::inflate
 
     override fun setup() {
         PrefsUtil.initPrefUtil(applicationContext)
         Network.makeRequestUsingOkhttp(this)
-
     }
 
-    override fun addCallbacks() {}
-
     override fun onSuccess(weatherResponse: WeatherResponse) {
-
-        val days = weatherResponse.list
-        val currentTemperature = Math.ceil(weatherResponse.list[0].temperature.day).toInt()
-        val lastClothName = PrefsUtil.clothName
-        val (newImage, newClothName) = getRandomImageForTemperature(
-            currentTemperature.toDouble(),
-            lastClothName
-        )
-
         runOnUiThread {
-            binding?.dayTime?.text = getDayNameFromTimestamp(days[0].timestamp).toString()
-            binding?.weatherDegre?.text = "${currentTemperature}°C"
-            binding?.weatherIcon?.let {
-                Glide.with(this@MainActivity)
-                    .load("https://openweathermap.org/img/wn/${weatherResponse.list[0].weather[0].icon}.png")
-                    .into(it)
-            }
-            binding?.clothePic?.setImageResource(newImage)
-            PrefsUtil.clothName = newClothName
-            binding?.recyclerView?.layoutManager =
-                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-            binding?.recyclerView?.adapter = WeatherAdapter(weatherResponse.list, this@MainActivity)
+            setupViews(weatherResponse)
+            setupRecyclerView(weatherResponse)
+            setupSuggestNextButton()
+        }
+    }
 
-            binding?.suggestNext?.setOnClickListener {
-                val (nextImage, nextClothName) = getRandomImageForTemperature(
-                    currentTemperature.toDouble(),
-                    PrefsUtil.clothName
-                )
-                binding?.clothePic?.setImageResource(nextImage)
-                PrefsUtil.clothName = nextClothName
-            }
+    private fun setupViews(weatherResponse: WeatherResponse) {
+        val days = weatherResponse.list
+        val currentTemperature = ceil(days[0].temperature.day).toInt()
+
+        binding?.apply {
+            dayTime.text = getDayNameFromTimestamp(days[0].timestamp).toString()
+            weatherDegre.text = "${currentTemperature}°C"
+            weatherIcon.loadWeatherIcon(weatherResponse.list[0].weather[0].icon)
+            clothePic.updateClothePic(currentTemperature)
+        }
+    }
+
+    private fun ImageView.loadWeatherIcon(icon: String) {
+        val iconUrl = "https://openweathermap.org/img/wn/$icon.png"
+        Glide.with(this.context)
+            .load(iconUrl)
+            .into(this)
+    }
+
+    private fun ImageView.updateClothePic(temperature: Int) {
+        val (newImage, newClothName) = getRandomImageForTemperature(temperature.toDouble(), PrefsUtil.clothName)
+        this.setImageResource(newImage)
+        PrefsUtil.clothName = newClothName
+    }
+
+    private fun setupRecyclerView(weatherResponse: WeatherResponse) {
+        binding?.recyclerView?.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = WeatherAdapter(weatherResponse.list, this@MainActivity)
+        }
+    }
+
+    private fun setupSuggestNextButton() {
+        binding?.suggestNext?.setOnClickListener {
+            binding?.clothePic?.updateClothePic(binding?.weatherDegre?.text?.toString()?.removeSuffix("°C")?.toInt() ?: 0)
         }
     }
 
@@ -68,37 +79,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), WeatherCallback {
         Log.e(LOG_TAG, "Error: $message")
     }
 
-
-    private fun getRandomImageForTemperature(
-        temperature: Double,
-        lastClothName: String?
-    ): Pair<Int, String> {
-        val coldImages = listOf(
-            R.drawable.cold1,
-            R.drawable.cold2,
-            R.drawable.cold3,
-            R.drawable.cold4,
-            R.drawable.cold5,
-            R.drawable.cold6
-        )
-        val normalImages =
-            listOf(R.drawable.cold7, R.drawable.cold8, R.drawable.cold9, R.drawable.cold10)
-        val hotImages = listOf(R.drawable.light1, R.drawable.light2, R.drawable.light3)
-
-        val images = when {
-            temperature <= 15 -> coldImages
-            temperature in 16.0..24.0 -> normalImages
-            else -> hotImages
+    override fun onWeatherItemClick(weatherInfo: WeatherInfo) {
+        val selectedTemperature = ceil(weatherInfo.temperature.day).toInt()
+        binding?.apply {
+            weatherDegre.text = "${selectedTemperature}°C"
+            weatherIcon.loadWeatherIcon(weatherInfo.weather[0].icon)
+            clothePic.updateClothePic(selectedTemperature)
         }
-
-        val availableImages = if (lastClothName != null) {
-            images.filter { it != lastClothName.toIntOrNull() }
-        } else {
-            images
-        }
-
-        val newImage = availableImages.random()
-        return Pair(newImage, newImage.toString())
     }
-
 }

@@ -18,11 +18,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         _binding = bindingInflater(layoutInflater)
         setContentView(requireNotNull(_binding).root)
         setup()
-        addCallbacks()
     }
 
     protected abstract fun setup()
-    protected abstract fun addCallbacks()
     protected fun log(value: Any) {
         Log.v(LOG_TAG, value.toString())
     }
