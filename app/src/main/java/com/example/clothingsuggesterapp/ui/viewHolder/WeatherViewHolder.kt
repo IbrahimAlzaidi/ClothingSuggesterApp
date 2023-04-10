@@ -1,5 +1,6 @@
 package com.example.clothingsuggesterapp.ui.viewHolder
 
+import android.graphics.drawable.GradientDrawable
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,7 @@ class WeatherViewHolder(
 
     fun bind(weatherInfo: WeatherInfo, isSelected: Boolean) {
         binding.dayName.text = getDayNameFromTimestamp(weatherInfo.timestamp)
-        binding.weatherDegree.text = "${ceil(weatherInfo.temperature.day).toInt()}"
+        binding.weatherDegree.text = "${ceil(weatherInfo.temperature.day).toInt()} C"
         loadWeatherIcon(weatherInfo.weather[0].icon, binding.iconWeather)
 
         updateBackgroundColor(isSelected)
@@ -31,12 +32,14 @@ class WeatherViewHolder(
     }
 
     private fun updateBackgroundColor(isSelected: Boolean) {
-        val backgroundColor = if (isSelected) R.color.blue else android.R.color.transparent
-        itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, backgroundColor))
+        val backgroundColor = if (isSelected) R.color.newcol2 else android.R.color.transparent
+        val background = ContextCompat.getDrawable(itemView.context, R.drawable.rounded_item_bg)?.mutate() as? GradientDrawable
+        background?.setColor(ContextCompat.getColor(itemView.context, backgroundColor))
+        itemView.background = background
     }
 
     private fun updateTextColor(isSelected: Boolean) {
-        val textColor = if (isSelected) R.color.white else R.color.black
+        val textColor = if (isSelected) R.color.black else R.color.white
         val resolvedColor = ContextCompat.getColor(itemView.context, textColor)
         binding.dayName.setTextColor(resolvedColor)
         binding.weatherDegree.setTextColor(resolvedColor)

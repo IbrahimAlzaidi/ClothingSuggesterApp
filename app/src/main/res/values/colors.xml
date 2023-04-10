@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#CE519DDA</color>
+    <color name="newcol">#D6897F</color>
+    <color name="newcol2">#89AB9D</color>
+    <color name="newcol3">#537B85</color>
+    <color name="background">#CDBA9A</color>
 </resources>
