@@ -82,6 +82,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), WeatherCallback,
     override fun onWeatherItemClick(weatherInfo: WeatherInfo) {
         val selectedTemperature = ceil(weatherInfo.temperature.day).toInt()
         binding?.apply {
+            dayTime.text = getDayNameFromTimestamp(weatherInfo.timestamp).toString()
             weatherDegre.text = "${selectedTemperature}°C"
             weatherIcon.loadWeatherIcon(weatherInfo.weather[0].icon)
             clothePic.updateClothePic(selectedTemperature)

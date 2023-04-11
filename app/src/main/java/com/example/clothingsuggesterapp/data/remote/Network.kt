@@ -8,7 +8,7 @@ import java.io.IOException
 
 object Network {
     private val client = OkHttpClient()
-    private const val baseUrl = "https://api.openweathermap.org/data/2.5/forecast/daily?q=baghdad&appid=ed60fcfbd110ee65c7150605ea8aceea&units=metric"
+    private const val baseUrl = "https://api.openweathermap.org/data/2.5/forecast/daily?q=berlin&appid=ed60fcfbd110ee65c7150605ea8aceea&units=metric"
     private val gson = Gson()
 
     fun makeRequestUsingOkhttp(callback: WeatherCallback) {

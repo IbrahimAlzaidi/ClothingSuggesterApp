@@ -32,14 +32,14 @@ class WeatherViewHolder(
     }
 
     private fun updateBackgroundColor(isSelected: Boolean) {
-        val backgroundColor = if (isSelected) R.color.newcol2 else android.R.color.transparent
+        val backgroundColor = if (isSelected) R.color.white else android.R.color.transparent
         val background = ContextCompat.getDrawable(itemView.context, R.drawable.rounded_item_bg)?.mutate() as? GradientDrawable
         background?.setColor(ContextCompat.getColor(itemView.context, backgroundColor))
         itemView.background = background
     }
 
     private fun updateTextColor(isSelected: Boolean) {
-        val textColor = if (isSelected) R.color.newcol3 else R.color.white
+        val textColor = if (isSelected) R.color.black else R.color.white
         val resolvedColor = ContextCompat.getColor(itemView.context, textColor)
         binding.dayName.setTextColor(resolvedColor)
         binding.weatherDegree.setTextColor(resolvedColor)
