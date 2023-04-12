@@ -1,4 +1,4 @@
-package com.example.clothingsuggesterapp
+package com.example.clothingsuggesterapp.ui
 
 
 import android.util.Log
@@ -7,11 +7,10 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.clothingsuggesterapp.data.WeatherCallback
-import com.example.clothingsuggesterapp.data.remote.Network
+import com.example.clothingsuggesterapp.data.Network
 import com.example.clothingsuggesterapp.databinding.ActivityMainBinding
 import com.example.clothingsuggesterapp.model.WeatherInfo
-import com.example.clothingsuggesterapp.model.WeatherResponse
-import com.example.clothingsuggesterapp.ui.OnWeatherItemClickListener
+import com.example.clothingsuggesterapp.model.WeatherListInfo
 import com.example.clothingsuggesterapp.ui.adapters.WeatherAdapter
 import com.example.clothingsuggesterapp.ui.base.BaseActivity
 import com.example.clothingsuggesterapp.utils.PrefsUtil
@@ -29,22 +28,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), WeatherCallback,
         Network.makeRequestUsingOkhttp(this)
     }
 
-    override fun onSuccess(weatherResponse: WeatherResponse) {
+    override fun onSuccess(weatherListInfo: WeatherListInfo) {
         runOnUiThread {
-            setupViews(weatherResponse)
-            setupRecyclerView(weatherResponse)
+            setupViews(weatherListInfo)
+            setupRecyclerView(weatherListInfo)
             setupSuggestNextButton()
         }
     }
 
-    private fun setupViews(weatherResponse: WeatherResponse) {
-        val days = weatherResponse.list
+    private fun setupViews(weatherListInfo: WeatherListInfo) {
+        val days = weatherListInfo.list
         val currentTemperature = ceil(days[0].temperature.day).toInt()
 
         binding?.apply {
             dayTime.text = getDayNameFromTimestamp(days[0].timestamp).toString()
             weatherDegre.text = "${currentTemperature}°C"
-            weatherIcon.loadWeatherIcon(weatherResponse.list[0].weather[0].icon)
+            weatherIcon.loadWeatherIcon(weatherListInfo.list[0].weather[0].icon)
             clothePic.updateClothePic(currentTemperature)
         }
     }
@@ -62,10 +61,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), WeatherCallback,
         PrefsUtil.clothName = newClothName
     }
 
-    private fun setupRecyclerView(weatherResponse: WeatherResponse) {
+    private fun setupRecyclerView(weatherListInfo: WeatherListInfo) {
         binding?.recyclerView?.apply {
             layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = WeatherAdapter(weatherResponse.list, this@MainActivity)
+            adapter = WeatherAdapter(weatherListInfo.list, this@MainActivity)
         }
     }
 

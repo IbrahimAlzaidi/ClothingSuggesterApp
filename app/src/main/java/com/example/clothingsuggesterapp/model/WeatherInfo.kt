@@ -7,7 +7,7 @@ data class WeatherInfo(
     val timestamp: Long,
 
     @SerializedName("weather")
-    val weather: List<WeatherCondition>,
+    val weather: List<WeatherState>,
 
     @SerializedName("temp")
     val temperature: Temperature

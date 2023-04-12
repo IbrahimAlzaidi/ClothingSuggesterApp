@@ -1,7 +1,6 @@
-package com.example.clothingsuggesterapp.data.remote
+package com.example.clothingsuggesterapp.data
 
-import com.example.clothingsuggesterapp.data.WeatherCallback
-import com.example.clothingsuggesterapp.model.WeatherResponse
+import com.example.clothingsuggesterapp.model.WeatherListInfo
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
@@ -20,8 +19,8 @@ object Network {
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
                     val responseString = response.body?.string()
-                    val weatherResponse = gson.fromJson(responseString, WeatherResponse::class.java)
-                    callback.onSuccess(weatherResponse)
+                    val weatherListInfo = gson.fromJson(responseString, WeatherListInfo::class.java)
+                    callback.onSuccess(weatherListInfo)
                 } else {
                     callback.onError(response.message)
                 }
