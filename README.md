@@ -1,6 +1,6 @@
 Title: Clothing Suggester App
 
-![lastClothes](https://user-images.githubusercontent.com/20369348/231400156-dd82bd44-d8c4-4120-b229-74b1380df2c4.png)
+<img src="https://user-images.githubusercontent.com/20369348/231400156-dd82bd44-d8c4-4120-b229-74b1380df2c4.png" alt="lastClothes" width="300" />
 
 Description:
 
