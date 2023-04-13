@@ -10,19 +10,19 @@ object Network {
     private const val baseUrl = "https://api.openweathermap.org/data/2.5/forecast/daily?q=berlin&appid=ed60fcfbd110ee65c7150605ea8aceea&units=metric"
     private val gson = Gson()
 
-    fun makeRequestUsingOkhttp(callback: WeatherCallback) {
+    fun makeRequestUsingOkhttp(weatherCallback: WeatherCallback) {
         val request = Request.Builder().url(baseUrl).build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                callback.onError(e.message ?: "Unknown error")
+                weatherCallback.onWeatherError(e.message ?: "Unknown error")
             }
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
                     val responseString = response.body?.string()
                     val weatherListInfo = gson.fromJson(responseString, WeatherListInfo::class.java)
-                    callback.onSuccess(weatherListInfo)
+                    weatherCallback.onWeatherSuccess(weatherListInfo)
                 } else {
-                    callback.onError(response.message)
+                    weatherCallback.onWeatherError(response.message)
                 }
             }
         })

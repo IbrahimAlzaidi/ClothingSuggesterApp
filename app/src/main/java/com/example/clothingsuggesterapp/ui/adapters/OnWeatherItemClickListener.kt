@@ -1,4 +1,4 @@
-package com.example.clothingsuggesterapp.ui
+package com.example.clothingsuggesterapp.ui.adapters
 
 import com.example.clothingsuggesterapp.model.WeatherInfo
 

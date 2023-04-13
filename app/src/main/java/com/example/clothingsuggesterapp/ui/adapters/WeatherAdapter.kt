@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clothingsuggesterapp.databinding.WeatherItemBinding
 import com.example.clothingsuggesterapp.model.WeatherInfo
-import com.example.clothingsuggesterapp.ui.OnWeatherItemClickListener
 import com.example.clothingsuggesterapp.ui.viewHolder.WeatherViewHolder
 
 class WeatherAdapter(

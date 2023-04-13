@@ -8,8 +8,8 @@ import com.bumptech.glide.Glide
 import com.example.clothingsuggesterapp.R
 import com.example.clothingsuggesterapp.databinding.WeatherItemBinding
 import com.example.clothingsuggesterapp.model.WeatherInfo
-import com.example.clothingsuggesterapp.ui.OnWeatherItemClickListener
-import com.example.clothingsuggesterapp.utils.Utils.getDayNameFromTimestamp
+import com.example.clothingsuggesterapp.ui.adapters.OnWeatherItemClickListener
+import com.example.clothingsuggesterapp.utils.WeatherUtils.getDayNameFromTimestamp
 import kotlin.math.ceil
 
 class WeatherViewHolder(

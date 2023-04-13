@@ -1,12 +1,9 @@
 package com.example.clothingsuggesterapp.utils
 
-import android.util.Log
 import com.example.clothingsuggesterapp.R
 import java.text.SimpleDateFormat
 import java.util.*
-
-object Utils {
-
+object WeatherUtils {
     fun getDayNameFromTimestamp(timestamp: Long): String {
         val date = Date(timestamp * 1000L)
         return SimpleDateFormat("dd MMMM, EEEE", Locale.getDefault()).format(date)
@@ -43,5 +40,4 @@ object Utils {
         val newImage = availableImages.random()
         return Pair(newImage, newImage.toString())
     }
-
 }
