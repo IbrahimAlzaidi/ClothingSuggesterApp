@@ -6,10 +6,12 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white_select">#33FFFFFF</color>
+    <color name="white">#FFFFFF</color>
     <color name="blue">#CE519DDA</color>
     <color name="newcol">#D6897F</color>
     <color name="newcol2">#89AB9D</color>
     <color name="newcol3">#537B85</color>
-    <color name="background">#CC202B2C</color>
+    <color name="background">#6FB2F8</color>
+    <color name="card_background">#86AFED</color>
 </resources>
