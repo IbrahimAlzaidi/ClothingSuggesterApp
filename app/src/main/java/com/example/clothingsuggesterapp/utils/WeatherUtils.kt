@@ -3,6 +3,7 @@ package com.example.clothingsuggesterapp.utils
 import com.example.clothingsuggesterapp.R
 import java.text.SimpleDateFormat
 import java.util.*
+
 object WeatherUtils {
     fun getDayNameFromTimestamp(timestamp: Long): String {
         val date = Date(timestamp * 1000L)
@@ -22,8 +23,9 @@ object WeatherUtils {
             R.drawable.cold6
         )
         val normalImages =
-            listOf(R.drawable.cold7, R.drawable.cold8, R.drawable.cold9, R.drawable.cold10)
-        val hotImages = listOf(R.drawable.light1, R.drawable.light2, R.drawable.light3)
+            listOf(R.drawable.normal1, R.drawable.normal2, R.drawable.normal3, R.drawable.normal4)
+        val hotImages =
+            listOf(R.drawable.light1, R.drawable.light2, R.drawable.light3, R.drawable.light4)
 
         val images = when {
             temperature <= 15 -> coldImages

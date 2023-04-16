@@ -14,4 +14,5 @@
     <color name="newcol3">#537B85</color>
     <color name="background">#6FB2F8</color>
     <color name="card_background">#86AFED</color>
+    <color name="recycler_background">#9FC7F8</color>
 </resources>
